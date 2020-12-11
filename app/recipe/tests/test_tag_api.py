@@ -10,7 +10,6 @@ from recipe.serializers import TagSerializer
 
 
 TAG_URL = reverse('recipe:tag-list')
-# TAG_URL = reverse('recipe:api-list')
 
 
 class PublicTagsApiTests(TestCase):
@@ -64,3 +63,15 @@ class PrivateTagsAPITests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data), 1)
         self.assertEqual(res.data[0]['name'], tag.name)
+
+    def test_create_tag_successful(self):
+        """Test creating a new tag"""
+        payload = {'name': 'new tag'}
+        self.client.post(TAG_URL, payload)
+
+        exists = Tag.objects.filter(
+            user=self.user,
+            name=payload['name']
+        ).exists()
+
+        self.assertTrue(exists)
