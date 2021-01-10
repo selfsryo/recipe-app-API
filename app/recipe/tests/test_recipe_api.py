@@ -200,4 +200,3 @@ class PrivateTagsAPITests(TestCase):
 
         tags = recipe.tags.all()
         self.assertEqual(tags.count(), 0)
-
